@@ -22,10 +22,18 @@ describe OysterCard do
     end
   end
 
-  describe 'balance'
+  describe '#balance' do
     it "raises error if balance is less than £1" do
       expect{subject.touch_in}.to raise_error "Balance too low!"
     end
+
+    it 'reduces balance by minimum fare' do
+      fare = OysterCard::FARE
+      subject.top_up(10)
+      subject.touch_in
+      expect{subject.touch_out}.to change{subject.balance}.by -fare
+    end
+  end
 
   describe '#top_up' do
     it 'tops up balance' do
@@ -38,10 +46,10 @@ describe OysterCard do
       subject.top_up(limit)
       expect{subject.top_up(1)}.to raise_error "Can't put more than £#{limit} on card!"
     end
-
-    it 'deducts money from the card' do
-      expect{subject.deduct(10)}.to change{subject.balance}.by -10
-    end
+    #
+    # it 'deducts money from the card' do
+    #   expect{subject.deduct(10)}.to change{subject.balance}.by -10
+    # end
   end
 
 end
