@@ -5,6 +5,20 @@ describe OysterCard do
     it 'creates a balance of zero' do
       expect(subject.balance).to eq 0
     end
+
+    it "is not in use" do
+      expect(subject.in_journey).to be false
+    end
+
+    it "has been touched in" do
+      subject.touch_in
+      expect(subject.in_journey).to be true
+    end
+
+    it "has been touched out" do
+      subject.touch_out
+      expect(subject.in_journey).to be false
+    end
   end
 
   describe '#top_up' do
@@ -22,7 +36,6 @@ describe OysterCard do
     it 'deducts money from the card' do
       expect{subject.deduct(10)}.to change{subject.balance}.by -10
     end
-
   end
 
 end
