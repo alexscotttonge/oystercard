@@ -11,6 +11,7 @@ describe OysterCard do
     end
 
     it "has been touched in" do
+      subject.top_up(10)
       subject.touch_in
       expect(subject.in_journey).to be true
     end
@@ -20,6 +21,11 @@ describe OysterCard do
       expect(subject.in_journey).to be false
     end
   end
+
+  describe 'balance'
+    it "raises error if balance is less than £1" do
+      expect{subject.touch_in}.to raise_error "Balance too low!"
+    end
 
   describe '#top_up' do
     it 'tops up balance' do
