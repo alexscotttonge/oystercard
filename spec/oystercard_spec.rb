@@ -3,25 +3,41 @@ require 'oystercard'
 describe OysterCard do
 
   let(:entry_station) {double :entry_station}
+  let(:exit_station) {double :exit_station}
+
+  let(:journey) { {entry_station: entry_station, exit_station: exit_station} }
 
   describe '#initialize' do
     it 'creates a balance of zero' do
       expect(subject.balance).to eq 0
     end
+  end
 
-    it "is not in use" do
-      expect(subject.in_journey?).to be false
-    end
-
+  describe '#touch_in' do
     it "has been touched in" do
       subject.top_up(10)
       subject.touch_in(1)
       expect(subject.in_journey?).to be true
     end
 
+    it 'remembers the current entry station' do
+      subject.top_up(5)
+      subject.touch_in(entry_station)
+      expect(subject.entry_station).to eq entry_station
+    end
+
     it "has been touched out" do
-      subject.touch_out
+      subject.touch_out(exit_station)
       expect(subject.in_journey?).to be false
+    end
+  end
+
+  describe '#touch_out' do
+    it 'remembers the exit station' do
+      subject.top_up(5)
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.exit_station).to eq exit_station
     end
   end
 
@@ -34,7 +50,7 @@ describe OysterCard do
       fare = OysterCard::FARE
       subject.top_up(10)
       subject.touch_in(1)
-      expect{subject.touch_out}.to change{subject.balance}.by -fare
+      expect{subject.touch_out(exit_station)}.to change{subject.balance}.by -fare
     end
   end
 
@@ -51,9 +67,13 @@ describe OysterCard do
     end
   end
 
-  it 'remembers the current entry station' do
-    subject.top_up(5)
-    subject.touch_in(entry_station)
-    expect(subject.entry_station).to eq entry_station
+    describe '#journey history' do
+      it 'populates the journey history array' do
+      subject.top_up(10)
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.journey_history).to include journey
+    end
   end
+
 end
