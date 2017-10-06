@@ -7,8 +7,8 @@ class OysterCard
 
   def initialize
     @balance = 0
-    @entry_station
-    @exit_station
+    @entry_station # this can be removed
+    @exit_station # this can be removed
     @journey_history = []
   end
 
@@ -29,15 +29,9 @@ class OysterCard
     @entry_station = nil
   end
 
-  def in_journey?
+  def in_journey? # can remove this so OysterCard.new.exit_station doesn't return nil
     @entry_station != nil
   end
-
-  # def journey_history
-  #   history = {}
-  #   history[@entry_station] = @exit_station
-  #   @j_history << history
-  # end
 
   private
 
@@ -47,8 +41,9 @@ class OysterCard
 
 end
 
-# card = OysterCard.new
-# card.top_up(10)
-# card.touch_in('Baker St')
-# card.touch_out('Hammersmith')
-# card.journey_history
+# c = OysterCard.new
+# c.top_up(5)
+# c.touch_in('bodger st')
+# c.touch_out('badger st')
+# c.entry_station
+# c.exit_station

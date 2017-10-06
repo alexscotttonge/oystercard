@@ -2,7 +2,7 @@ require 'station'
 
 describe Station do
 
-  subject (:station) {Station.new}
+  subject (:station) { Station.new }
 
   it 'knows its name' do
     expect(station.name).to eq 'Stamford Brook'
